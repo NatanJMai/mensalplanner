@@ -130,3 +130,8 @@ dmypy.json
 
 # Configuration files
 *.ini
+
+# Visual Studio files
+*.vs
+
+*flask_test.py

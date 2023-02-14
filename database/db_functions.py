@@ -1,3 +1,7 @@
+from asyncio.windows_events import NULL
+from genericpath import exists
+from pickle import FALSE
+from sqlite3 import connect
 import mysql.connector
 import configparser
 from mysql.connector import Error
@@ -105,15 +109,51 @@ def create_tables(connection):
     return
 
 # Function to read a query from database connection.
-def read_query(connection, query):
+def read_query(connection, query, **kwargs):
     result = None
     cursor = connection.cursor()
 
+    if 'only_one' in kwargs:
+        only_one = True
+
     try:
         cursor.execute(query)
-        result = cursor.fetchall()
+        
+        if only_one:
+            result = cursor.fetchone()
+        else:
+            result = cursor.fetchall()
         return result
     except Error as err:
         print(f"Error: '{err}'")
+
+
+def verify_login(connection, username, password):
+    query = f"SELECT * FROM user u WHERE u.user_name = '{username}' and u.user_password = '{password}';"
+    exist = read_query(connection, query, only_one = 'only_one')
+
+    if not exist:
+        return None
+    return exist
+
+
+def insert_into_table(connection, table, **kwargs):
+    query = ""
+
+    if 'user' in table:
+        username = kwargs['username']
+        password = kwargs['password']
+        email    = kwargs['email']
+
+        query = f"SELECT * FROM user u WHERE u.user_name = '{username}';"
+        exist = read_query(connection, query, only_one = 'only_one')
+
+        if exist:
+            return False
+
+        # id, name and password
+        query = f''' INSERT INTO user VALUES (NULL, '{username}', '{password}', '{email}');'''
+        execute_query(connection, query)
+        return True
 
 
