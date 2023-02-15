@@ -1,7 +1,7 @@
 from asyncio.windows_events import NULL
 from genericpath import exists
 from pickle import FALSE
-from sqlite3 import connect
+from sqlite3 import Connection, connect
 import mysql.connector
 import configparser
 from mysql.connector import Error
@@ -109,17 +109,15 @@ def create_tables(connection):
     return
 
 # Function to read a query from database connection.
+# Only_one parameter is used if you want just ONE table record. Only_one -> fetchone()
 def read_query(connection, query, **kwargs):
     result = None
     cursor = connection.cursor()
 
-    if 'only_one' in kwargs:
-        only_one = True
-
     try:
         cursor.execute(query)
         
-        if only_one:
+        if 'only_one' in kwargs:
             result = cursor.fetchone()
         else:
             result = cursor.fetchall()
@@ -156,4 +154,8 @@ def insert_into_table(connection, table, **kwargs):
         execute_query(connection, query)
         return True
 
-
+# task_id, task_name, task_description, task_datetime, task_user, task_label
+def get_task_from_user(connection, user_id):
+    query  = f"SELECT * FROM task t WHERE t.user = '{user_id}';"
+    result = read_query(connection, query)
+    return result

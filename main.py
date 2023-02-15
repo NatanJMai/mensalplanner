@@ -1,8 +1,8 @@
-from flask           import Flask, render_template, request, session
+from turtle import width
+from flask           import Flask, render_template, request, session, redirect, url_for
 from mysql.connector import Error
 from flask_mysqldb   import MySQL
 from os              import urandom
-
 
 import database.db_functions as database
 import flask_test as ftest
@@ -16,12 +16,15 @@ app = ftest.run(app)
 app.secret_key = urandom(24)
 mysql = MySQL(app)
 
+@app.route('/mensalplanner/index')
+def index(**kwargs):    
+    msg = ''
+    if 'msg' in kwargs:
+        msg = kwargs['msg']
 
-@app.route('/index')
-def python_login():    
-    return render_template('index.html')
+    return render_template('index.html', msg = msg)
     
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/mensalplanner/login', methods = ['POST', 'GET'])
 def login():
     msg = ''
 
@@ -38,15 +41,15 @@ def login():
             session['email'] = email
             session['loggedin'] = True
             session['username'] = name
-            
-            return render_template('home.html')
-        else:
-            msg = "LOGIN NOT WORKING"
-            home()
-    
-    return render_template('index.html')        
+            session['password'] = password
 
-@app.route('/register', methods = ['POST', 'GET'])
+            return home()
+        else:
+            msg = "User not found!"    
+    return index(msg = msg)
+            
+
+@app.route('/mensalplanner/register', methods = ['POST', 'GET'])
 def register():
     msg = ''
 
@@ -59,22 +62,45 @@ def register():
         # if result = true, there is already an user.
         if not result:
             msg = "User already created!"
-            return render_template('index.html')
+            return index(msg = msg)
         
         database.insert_into_table(mysql.connection, 'user', username = username, password = password, email = email)
-        msg = "SUCESSO ON CRATE"
-        return render_template('home.html')
+        return login()
 
-    return render_template('register.html')
+    return render_template('register.html', msg = msg)
 
 
-@app.route('/home')
+@app.route('/mensalplanner/home')
 def home():
-    return render_template('home.html')
+    account = session
+
+    # user is logged
+    if 'loggedin' in account:
+
+        # get all user`s task
+        tasks = database.get_task_from_user(mysql.connection, account['id'])
+        return render_template('home.html', account = account, tasks = tasks)
+
+    return redirect(url_for('login'))
+
+@app.route('/mensalplanner/profile')
+def profile():
+    if 'loggedin' in session:
+        u_id, name, password, email = database.verify_login(mysql.connection, session['username'], session['password'])
+        account = {'user_id' : u_id, 'username' : name, 'password' : password, 'email' : email}
+
+        return render_template('profile.html', account = account)
+    return home()
+
+@app.route('/mensalplanner/view_task', methods = ['POST', 'GET'])
+def view_task():
+    return
 
 
-
-
+@app.route('/mensalplanner/logout')
+def logout():
+    session.clear()
+    return home()
 
 @app.route('/')
 def hello_world():
@@ -88,9 +114,9 @@ def view_page():
     t.daemon = True
     t.start()
 
-    webview.create_window("PyWebView & Flask", "http://localhost/index")
+    webview.create_window("PyWebView & Flask", "http://localhost/mensalplanner/index", width = 1200)
     webview.start()
-    #sys.exit()
+    sys.exit()
     return
 
 

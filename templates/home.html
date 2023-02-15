@@ -1,1 +1,35 @@
-LOGGED SUCESS!
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Welcome back, {{ account['username'] }}. Here your today tasks:</h2>
+<div>
+    {% for t in tasks %}
+    
+    <div class="test">
+        <div class="update">
+            <form action="" method="post" onclick="">
+                <!-- task_name, task_description, task_datetime -->
+                <table>
+                    <tr>
+                        <td>Task Name:</td>
+                        <td>{{ t[1] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Task Description:</td>
+                        <td>{{ t[2] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Task DateTime:</td>
+                        <td>{{ t[3] }}</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
