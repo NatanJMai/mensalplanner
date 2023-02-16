@@ -1,8 +1,8 @@
-from turtle import width
 from flask           import Flask, render_template, request, session, redirect, url_for
 from mysql.connector import Error
 from flask_mysqldb   import MySQL
 from os              import urandom
+from datetime        import datetime
 
 import database.db_functions as database
 import flask_test as ftest
@@ -10,6 +10,8 @@ import tests
 import webview
 import sys
 import threading
+import util.util as ut
+
 
 app = Flask(__name__)
 app = ftest.run(app)
@@ -76,10 +78,18 @@ def home():
 
     # user is logged
     if 'loggedin' in account:
+        week_days      = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-        # get all user`s task
-        tasks = database.get_task_from_user(mysql.connection, account['id'])
-        return render_template('home.html', account = account, tasks = tasks)
+        # get tasks of user on now month
+        tasks      = database.get_task_from_user(mysql.connection, account['id'], month = datetime.now().month, year = datetime.now().year)
+        
+        # get days of month
+        days_month = ut.get_days_of_date()
+
+        # get tasks of days
+        day_and_tasks  = ut.get_days_and_task(days_month, tasks)
+
+        return render_template('home.html', account = account, tasks = tasks, days_month = days_month, week_days = week_days, day_and_tasks = day_and_tasks)
 
     return redirect(url_for('login'))
 
@@ -143,6 +153,7 @@ def main():
 
 if __name__ == "__main__":    
     view_page()
+    #main()
         
     
     

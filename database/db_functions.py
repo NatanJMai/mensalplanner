@@ -95,16 +95,21 @@ def create_tables(connection):
     CREATE TABLE task 
     (task_id            INT PRIMARY KEY AUTO_INCREMENT,
      task_name          VARCHAR(255)  NOT NULL,
-     task_description   VARCHAR(255) NOT NULL,
-     task_datetime      DATE NOT NULL,
-     user            INT NOT NULL,
-     label           INT,
-     FOREIGN KEY (user) REFERENCES user(user_id),
-     FOREIGN KEY (label) REFERENCES label(label_id));
+     task_description   VARCHAR(255)  NOT NULL,
+     task_datetime      DATE          NOT NULL,
+     task_day           TINYINT       NOT NULL,
+     task_month         TINYINT       NOT NULL,
+     task_year          SMALLINT      NOT NULL,
+     task_value         DOUBLE        NOT NULL,
+     task_credit_debit  BOOLEAN       NOT NULL,
+     user               INT           NOT NULL,
+     label              INT,
+     FOREIGN KEY (user) REFERENCES   user(user_id),
+     FOREIGN KEY (label) REFERENCES  label(label_id));
      """
 
-    execute_query(connection, create_user_table)
-    execute_query(connection, create_label_table)
+    #execute_query(connection, create_user_table)
+    #execute_query(connection, create_label_table)
     execute_query(connection, create_task_table)
     return
 
@@ -155,7 +160,13 @@ def insert_into_table(connection, table, **kwargs):
         return True
 
 # task_id, task_name, task_description, task_datetime, task_user, task_label
-def get_task_from_user(connection, user_id):
-    query  = f"SELECT * FROM task t WHERE t.user = '{user_id}';"
+def get_task_from_user(connection, user_id, **kwargs):
+    if 'month' in kwargs and 'year' in kwargs:
+        year  = kwargs['year']
+        month = kwargs['month']
+        query = f"SELECT * FROM task t WHERE t.user = '{user_id}' and t.task_month = '{month}' and t.task_year = '{year}';"
+    else:
+        query  = f"SELECT * FROM task t WHERE t.user = '{user_id}';"
+
     result = read_query(connection, query)
     return result

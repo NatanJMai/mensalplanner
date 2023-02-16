@@ -21,18 +21,21 @@ def test_insert():
     (3,  'Label 3', 'Label to professional', 'Red');
     """
 
-    # id, name, description, datetime, user and label
-    now = datetime.datetime.now().strftime('%Y-%m-%d')
+    # id, name, description, datetime, day, month, year, value, credit/debit, user and label
+    now     = datetime.datetime.now().strftime('%Y-%m-%d')
+    day     = datetime.datetime.now().day
+    month   = datetime.datetime.now().month
+    year    = datetime.datetime.now().year
     query_task = f'''
     INSERT INTO task VALUES 
-    (1, 'TASK 1', 'TASK TO FINANCE', '{now}', 1, 1),
-    (2, 'TASK 2', 'TASK TO FINANCE', '{now}', 2, 2),
-    (3, 'TASK 3', 'TASK TO FINANCE', '{now}', 2, 3);
+    (null, 'TASK 1', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 15000, FALSE, 1, 1),
+    (null, 'TASK 2', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 2022, TRUE, 2, 2),
+    (null, 'TASK 3', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 3333, FALSE, 2, 3);
     '''
 
     connection = database.connect_on_database()
-    database.execute_query(connection, query_user)
-    database.execute_query(connection, query_label)
+    #database.execute_query(connection, query_user)
+    #database.execute_query(connection, query_label)
     database.execute_query(connection, query_task)
 
 def show_all():

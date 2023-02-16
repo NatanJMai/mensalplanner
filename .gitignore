@@ -134,4 +134,5 @@ dmypy.json
 # Visual Studio files
 *.vs
 
-*flask_test.py
+# Backup file
+*bkp.html

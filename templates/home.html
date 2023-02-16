@@ -1,34 +1,50 @@
+<!-- variables from Python: 
+    account, 
+    tasks, 
+    days_month, 
+    week_days, 
+    day_and_tasks 
+-->
+
 {% extends 'layout.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 <h2>Welcome back, {{ account['username'] }}. Here your today tasks:</h2>
+
 <div>
-    {% for t in tasks %}
-    
-    <div class="test">
-        <div class="update">
-            <form action="" method="post" onclick="">
-                <!-- task_name, task_description, task_datetime -->
-                <table>
-                    <tr>
-                        <td>Task Name:</td>
-                        <td>{{ t[1] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Task Description:</td>
-                        <td>{{ t[2] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Task DateTime:</td>
-                        <td>{{ t[3] }}</td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+    <div class="wrapper">
+        <!-- Week Days: 'Monday', 'Tuesday' etc. -->
+        {% for d in range(0,7) %}
+            <div class="wrapper-weekday">
+                <h1> {{ week_days[d] }} </h1>
+            </div>
+        {% endfor %}
+
+        <!-- Every day of month -->
+        {% for week in days_month %}
+            {% for day in week %}
+                {% if day != 0 %}
+
+                    <div class="wrapper-day">
+                        <h1> DIA {{day}} </h1>
+                        {% if day in day_and_tasks %}
+                            
+                            <!-- Display tasks of day -->
+                            {% for t in day_and_tasks[day] %}
+                                Name: {{ t[1] }}
+                                Description: {{ t[2] }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <div class="wrapper-day"></div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 
