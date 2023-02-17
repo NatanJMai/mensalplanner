@@ -27,17 +27,16 @@
             {% for day in week %}
                 {% if day != 0 %}
 
-                    <div class="wrapper-day">
+                    <article class="box">
                         <h1> DIA {{day}} </h1>
                         {% if day in day_and_tasks %}
                             
                             <!-- Display tasks of day -->
                             {% for t in day_and_tasks[day] %}
-                                Name: {{ t[1] }}
-                                Description: {{ t[2] }}
+                                <button id="{{ t[0] }}" type="button" onclick="hidden_show()" class="button-5 common" value="{{ t[0] }}">{{ t[1] }}</button>
                             {% endfor %}
                         {% endif %}
-                    </div>
+                    </article>
 
                 {% else %}
                     <div class="wrapper-day"></div>
@@ -45,7 +44,51 @@
             {% endfor %}
         {% endfor %}
     </div>
+    
+    <div id = "third" class="centered centeredbox" hidden="hidden"></div>
+
+
 </div>
+
+Search: <input type="text" id="search_form_input"></input>
+<div id="place_for_suggestions"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    $('.common').click(clickTask)
+
+    function clickTask() {
+        //alert("click from " + $(this.id))
+
+        var task_id = this.id;
+
+        $.ajax({
+            url: "/mensalplanner/view_task",
+            type: "get",
+            data: { jsdata: task_id },
+            success: function (response) {
+                $("#third").html(response);
+                //$("#third").attr("hidden", "")
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+</script>
+
+<script type="application/javascript">
+    function hidden_show(name) {
+        var element = document.getElementById("third");
+        var hidden  = element.getAttribute("hidden");
+
+        if (hidden) {
+            element.removeAttribute("hidden");
+        } else {
+            element.setAttribute("hidden", "hidden");
+        }
+    }
+</script>
 
 
 {% endblock %}

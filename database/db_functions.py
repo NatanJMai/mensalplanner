@@ -159,6 +159,12 @@ def insert_into_table(connection, table, **kwargs):
         execute_query(connection, query)
         return True
 
+
+def get_task_from_id(connection, task_id):
+    query = f"SELECT * FROM task t WHERE t.task_id = '{task_id}';"
+    result = read_query(connection, query, only_one = 'only_one')
+    return result
+
 # task_id, task_name, task_description, task_datetime, task_user, task_label
 def get_task_from_user(connection, user_id, **kwargs):
     if 'month' in kwargs and 'year' in kwargs:
@@ -170,3 +176,8 @@ def get_task_from_user(connection, user_id, **kwargs):
 
     result = read_query(connection, query)
     return result
+
+def update_task(connection, task_id, task_name, task_desc):
+    query = f"UPDATE task t SET t.task_name = '{task_name}', t.task_description = '{task_desc}' WHERE t.task_id = '{task_id}';"
+    execute_query(connection, query)
+    return

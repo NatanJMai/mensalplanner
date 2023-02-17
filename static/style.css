@@ -12,11 +12,113 @@ body {
 }
 
 /* TEST */
-.test {
-    background-color: #ffffff;
-    box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
-    margin: 10px auto;
-    width: 20px;
+/* METHOD 2 - DIV CENTERED */
+
+.parent {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+.centeredbox {
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    background: linear-gradient(-30deg, #4A00E0, #8E2DE2);
+}
+
+
+
+/* BOX */
+.box {
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    align-items: center;
+    color: #fff;
+    /* padding: 2rem; */
+    max-width: 30rem;
+    background: #252525;
+    position: relative;
+    box-shadow: aqua;
+    transition: transform 300ms ease-in-out, box-shadow 400ms ease, background 100ms ease;
+}
+
+[data-interactive]:hover,
+[data-interactive]:focus-within {
+    background: #111111;
+    box-shadow: 0 1rem 1rem rgba(0,0,0,0.3);
+    transform: translateY(-0.5rem);
+}
+
+.box > * + * {
+    margin-top: 1em;
+}
+
+
+/* CSS */
+.button-5 {
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #fa6400;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    /*min-height: 3rem;*/
+    padding: calc(.175rem - 1px) calc(0.8rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+}
+
+.button-5:hover,
+.button-5:focus {
+    background-color: #fb8332;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.button-5:hover {
+    transform: translateY(-1px);
+}
+
+.button-5:active {
+    background-color: #c85000;
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+}
+
+
+.button {
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
 }
 
 .grid-container {

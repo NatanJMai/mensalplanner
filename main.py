@@ -71,6 +71,24 @@ def register():
 
     return render_template('register.html', msg = msg)
 
+@app.route('/mensalplanner/update_task', methods = ['POST', 'GET'])
+def update_task():
+    if request.method == 'POST' and 'task_id' in request.form and 'task_name' in request.form and 'task_desc' in request.form:
+        task_id   = request.form['task_id']
+        task_name = request.form['task_name']
+        task_desc = request.form['task_desc']
+        
+        database.update_task(mysql.connection, task_id, task_name, task_desc)
+        #print(f"ID: '{task_id}' NAME '{task_name}' e DESC '{task_desc}'")
+    return home()
+
+@app.route('/mensalplanner/view_task')
+def view_task():
+     task_id = request.args.get('jsdata')
+     #print(task_id)
+     task_details = database.get_task_from_id(mysql.connection, task_id)
+     return render_template('view_task.html', task_details = task_details)
+
 
 @app.route('/mensalplanner/home')
 def home():
@@ -78,16 +96,16 @@ def home():
 
     # user is logged
     if 'loggedin' in account:
-        week_days      = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
         # get tasks of user on now month
-        tasks      = database.get_task_from_user(mysql.connection, account['id'], month = datetime.now().month, year = datetime.now().year)
+        tasks = database.get_task_from_user(mysql.connection, account['id'], month = datetime.now().month, year = datetime.now().year)
         
         # get days of month
         days_month = ut.get_days_of_date()
 
         # get tasks of days
-        day_and_tasks  = ut.get_days_and_task(days_month, tasks)
+        day_and_tasks = ut.get_days_and_task(days_month, tasks)
 
         return render_template('home.html', account = account, tasks = tasks, days_month = days_month, week_days = week_days, day_and_tasks = day_and_tasks)
 
@@ -101,10 +119,6 @@ def profile():
 
         return render_template('profile.html', account = account)
     return home()
-
-@app.route('/mensalplanner/view_task', methods = ['POST', 'GET'])
-def view_task():
-    return
 
 
 @app.route('/mensalplanner/logout')
