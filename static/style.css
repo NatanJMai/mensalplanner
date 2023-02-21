@@ -12,7 +12,27 @@ body {
 }
 
 /* TEST */
-/* METHOD 2 - DIV CENTERED */
+/*h1, h2 {
+    font-family: Alegreya, serif;
+}
+
+h1 {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-gap: 20px;
+} */
+
+
+/*@supports (display: grid) {
+    h1:before,
+    h1:after {
+        content: "";
+        align-self: center;
+        border-top: 1px solid #999;
+    }
+}*/
+
 
 .parent {
     width: 100vw;
@@ -31,12 +51,43 @@ body {
     text-align: center;
     color: #fff;
     padding: 20px;
-    border-radius: 4px;
+    border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    background: linear-gradient(-30deg, #4A00E0, #8E2DE2);
+    /*background: linear-gradient(, #4A00E0, #8E2DE2);*/
 }
 
 
+.modal__content {
+    border-radius: 4px;
+    position: relative;
+    width: 450px;
+    height: 450px;
+    max-width: 100%;
+    background: cornflowerblue;
+    padding: 4em 2em;
+}
+
+.modal__footer {
+    text-align: right;
+    a
+
+{
+    color: #585858;
+}
+
+i {
+    color: #d02d2c;
+}
+
+}
+
+.modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #585858;
+    text-decoration: none;
+}
 
 /* BOX */
 .box {
@@ -156,10 +207,53 @@ body {
     text-align: center;
 }
 
+.modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #585858;
+    text-decoration: none;
+}
+
+/* CSS */
+.button-38 {
+    background-color: #FFFFFF;
+    border: 0;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #111827;
+    font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: .75rem 1rem;
+    text-align: center;
+    text-decoration: none #D1D5DB solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-38:hover {
+    background-color: rgb(249,250,251);
+}
+
+.button-38:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.button-38:focus-visible {
+    box-shadow: none;
+}
+
+
 
 
 /* TEST */
-
 
 .login, .register {
     width: 400px;

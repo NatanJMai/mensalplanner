@@ -1,59 +1,53 @@
 <!-- task_id, task_name, task_description, task_datetime, task_user, task_label -->
-<div id="div_0">
-    <form action="" method="post">
-        <label for="task_name">
-            <i class="fas fa-user"></i> {{ task_details[1] }}<br>
-        </label>
+<div>
+    <div id="div_details" class="modal__content" data-closable>
+        <a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
 
-        <label for="task_desc">
-            <i class="fas fa-lock"></i> {{ task_details[2] }}<br>
-        </label>
+        <h1>{{ task_details[1] }}</h1>
+        <p>{{ task_details[2] }}</p>
 
-        <label for="task_label">
-            <i class="fas fa-lock"></i> {{ task_details[4] }}<br>
-        </label>
-    </form>
+        <!--<input type="submit" id="button_update" onclick="hidden_show_update()">-->
+        <button id="button_update" class="button-38" onclick="hidden_show_update('button_update', 'div_details', 'div_update')">UPDATE TASK</button>
+        <button id="button_remove" class="button-38" onclick="">REMOVE TASK</button>
+    </div>
 </div>
 
+<div id="div_update" class="modal__content" hidden="hidden">
+    <a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
 
-<div id="div_1" hidden="hidden">
     <form action="{{ url_for('update_task') }}" method="post">
         <input type="text" name="task_id" value="{{ task_details[0] }}" id="task_id" hidden="hidden">
 
         <label for="task_name">Name: </label>
-        <input type="text" name="task_name" value = "{{ task_details[1] }}" id="task_name">
+        <input type="text" name="task_name" value="{{ task_details[1] }}" id="task_name"> <br>
 
         <label for="task_desc">Description</label>
-        <input type="text" name="task_desc" value = "{{ task_details[2] }}" id="task_desc">
+        <input type="text" name="task_desc" value="{{ task_details[2] }}" id="task_desc">
 
-        <input type="submit" value="Submit">
+        <input type="submit" class="button-38" value="UPDATE">
     </form>
 </div>
 
-<button id="button_update" onclick="hidden_show()">TESTE</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    $('#button_remove').click(click_remove)
 
-<script type="application/javascript">
-    function hidden_show() {
-        var button    = document.getElementById("button_update");
+    function click_remove() {
+        var task_id = {{ task_details[0] }};
 
-        var element_0 = document.getElementById("div_0");
-        var element_1 = document.getElementById("div_1");
-        var hidden_0  = element_0.getAttribute("hidden");
-        var hidden_1  = element_1.getAttribute("hidden");
-
-        console.log(hidden_1);
-
-        if (hidden_0) {
-            element_0.removeAttribute("hidden");
+        if (confirm('Do you confirm delete ' + '?')) {
+            $.ajax({
+                url: "/mensalplanner/remove_task",
+                type: "get",
+                data: { jsdata: task_id},
+                success: function () {
+                    window.location.replace("/mensalplanner/home")
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }});
         } else {
-            element_0.setAttribute("hidden", "hidden");
-        }
-
-        if (hidden_1) {
-            element_1.removeAttribute("hidden");
-            button.setAttribute("hidden", "hidden");
-        } else {
-            element_1.setAttribute("hidden", "hidden");
+            alert('Why did you press cancel? You should have confirmed');
         }
     }
 </script>

@@ -82,10 +82,16 @@ def update_task():
         #print(f"ID: '{task_id}' NAME '{task_name}' e DESC '{task_desc}'")
     return home()
 
+@app.route('/mensalplanner/remove_task', methods = ['POST', 'GET'])
+def remove_task():
+    task_id = request.args.get('jsdata')
+    
+    database.remove_task(mysql.connection, task_id)
+    return home()
+
 @app.route('/mensalplanner/view_task')
 def view_task():
      task_id = request.args.get('jsdata')
-     #print(task_id)
      task_details = database.get_task_from_id(mysql.connection, task_id)
      return render_template('view_task.html', task_details = task_details)
 
@@ -141,7 +147,6 @@ def view_page():
     webview.create_window("PyWebView & Flask", "http://localhost/mensalplanner/index", width = 1200)
     webview.start()
     sys.exit()
-    return
 
 
 def main():
@@ -156,7 +161,7 @@ def main():
             elif choose == 1:
                 database.start_database()
             elif choose == 2:
-                tests.test_insert()
+                tests.test_insert(int(input("DAY")))
             elif choose == 3:
                 tests.show_all()
             else:

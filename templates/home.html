@@ -32,8 +32,10 @@
                         {% if day in day_and_tasks %}
                             
                             <!-- Display tasks of day -->
-                            {% for t in day_and_tasks[day] %}
-                                <button id="{{ t[0] }}" type="button" onclick="hidden_show()" class="button-5 common" value="{{ t[0] }}">{{ t[1] }}</button>
+                            {% for dtask in day_and_tasks[day] %}
+                                <button id="{{ dtask[0] }}" type="button" class="button-5 common">
+                                    {{ dtask[1] }} <br /> {{ dtask[7] }}
+                                </button>
                             {% endfor %}
                         {% endif %}
                     </article>
@@ -45,13 +47,9 @@
         {% endfor %}
     </div>
     
-    <div id = "third" class="centered centeredbox" hidden="hidden"></div>
-
-
+    <div id = "div_task" class="centered centeredbox" style="visibility:hidden"></div>
 </div>
 
-Search: <input type="text" id="search_form_input"></input>
-<div id="place_for_suggestions"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
@@ -67,8 +65,8 @@ Search: <input type="text" id="search_form_input"></input>
             type: "get",
             data: { jsdata: task_id },
             success: function (response) {
-                $("#third").html(response);
-                //$("#third").attr("hidden", "")
+                $("#div_task").html(response);
+                $('div#div_task').css('visibility', 'visible')
             },
             error: function (xhr) {
                 //Do Something to handle error
@@ -78,16 +76,44 @@ Search: <input type="text" id="search_form_input"></input>
 </script>
 
 <script type="application/javascript">
-    function hidden_show(name) {
-        var element = document.getElementById("third");
-        var hidden  = element.getAttribute("hidden");
+    /* function hidden_show(name) {
+         var element = document.getElementById("third");
+         var hidden  = element.getAttribute("hidden");
 
-        if (hidden) {
-            element.removeAttribute("hidden");
-        } else {
-            element.setAttribute("hidden", "hidden");
-        }
-    }
+         if (hidden) {
+             element.removeAttribute("hidden");
+         } else {
+             element.setAttribute("hidden", "hidden");
+         }
+     } */
+
+     function hidden_show_update(button, div_first, div_second) {
+         var button    = document.getElementById(button);
+
+         var element_first  = document.getElementById(div_first);
+         var element_second = document.getElementById(div_second);
+         
+         // var element_details = document.getElementById("div_details");
+         // var element_update  = document.getElementById("div_update");
+
+         var hidden_first  = element_first.getAttribute("hidden");
+         var hidden_second = element_second.getAttribute("hidden");
+
+         console.log(hidden_first);
+
+         if (hidden_first) {
+             element_first.removeAttribute("hidden");
+         } else {
+             element_first.setAttribute("hidden", "hidden");
+         }
+
+         if (hidden_second) {
+             element_second.removeAttribute("hidden");
+             button.setAttribute("hidden", "hidden");
+         } else {
+             element_second.setAttribute("hidden", "hidden");
+         }
+     }
 </script>
 
 

@@ -1,7 +1,7 @@
 import datetime
 import database.db_functions as database
 
-def test_insert():
+def test_insert(day):
     # id, name and password
     query_user = """
     INSERT INTO user VALUES
@@ -23,7 +23,7 @@ def test_insert():
 
     # id, name, description, datetime, day, month, year, value, credit/debit, user and label
     now     = datetime.datetime.now().strftime('%Y-%m-%d')
-    day     = datetime.datetime.now().day
+    #day     = datetime.datetime.now().day
     month   = datetime.datetime.now().month
     year    = datetime.datetime.now().year
     query_task = f'''

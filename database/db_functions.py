@@ -181,3 +181,8 @@ def update_task(connection, task_id, task_name, task_desc):
     query = f"UPDATE task t SET t.task_name = '{task_name}', t.task_description = '{task_desc}' WHERE t.task_id = '{task_id}';"
     execute_query(connection, query)
     return
+
+def remove_task(connection, task_id):
+    query = f"DELETE FROM task WHERE task_id = '{task_id}';"
+    execute_query(connection, query)
+    return
