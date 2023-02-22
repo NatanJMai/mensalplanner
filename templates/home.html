@@ -26,20 +26,22 @@
         {% for week in days_month %}
             {% for day in week %}
                 {% if day != 0 %}
-
-                    <article class="box">
+                    <article class="box" id="article_task">
                         <h1> DIA {{day}} </h1>
                         {% if day in day_and_tasks %}
                             
-                            <!-- Display tasks of day -->
+                            <!-- Display tasks of day. TASK TABLE task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
                             {% for dtask in day_and_tasks[day] %}
                                 <button id="{{ dtask[0] }}" type="button" class="button-5 common">
-                                    {{ dtask[1] }} <br /> {{ dtask[7] }}
+                                    {{ dtask[1] }} <br />
                                 </button>
                             {% endfor %}
                         {% endif %}
-                    </article>
 
+                        <button id="{{day}}" class="new_task" type="button">
+                            (+) NEW
+                        </button>
+                    </article>
                 {% else %}
                     <div class="wrapper-day"></div>
                 {% endif %}
@@ -54,6 +56,28 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     $('.common').click(clickTask)
+    $('.new_task').click(newTask)
+
+    function newTask() {
+        var day     = this.id;
+        var user_id = "{{ account['id'] }}";
+
+        $.ajax({
+            url: "/mensalplanner/new_task",
+            type: "get",
+            data: { day: day, user: user_id },
+            success: function (response) {
+                $("#div_task").html(response);
+                $('div#div_task').css('visibility', 'visible');
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+
+        
+
+    }
 
     function clickTask() {
         //alert("click from " + $(this.id))
@@ -66,13 +90,16 @@
             data: { jsdata: task_id },
             success: function (response) {
                 $("#div_task").html(response);
-                $('div#div_task').css('visibility', 'visible')
+                $('div#div_task').css('visibility', 'visible');
             },
             error: function (xhr) {
                 //Do Something to handle error
             }
         });
     }
+
+
+
 </script>
 
 <script type="application/javascript">

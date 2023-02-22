@@ -29,8 +29,9 @@ def index(**kwargs):
 @app.route('/mensalplanner/login', methods = ['POST', 'GET'])
 def login():
     msg = ''
+    l   = ['username', 'password']
 
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    if ut.verifyRequestList('POST', l, request.form):
         username = request.form['username']
         password = request.form['password']
         account  = database.verify_login(mysql.connection, username, password)
@@ -73,21 +74,22 @@ def register():
 
 @app.route('/mensalplanner/update_task', methods = ['POST', 'GET'])
 def update_task():
-    if request.method == 'POST' and 'task_id' in request.form and 'task_name' in request.form and 'task_desc' in request.form:
+    l = ['task_id', 'task_name', 'task_desc']
+
+    if ut.verifyRequestList('POST', l, request.form):
         task_id   = request.form['task_id']
         task_name = request.form['task_name']
         task_desc = request.form['task_desc']
         
         database.update_task(mysql.connection, task_id, task_name, task_desc)
-        #print(f"ID: '{task_id}' NAME '{task_name}' e DESC '{task_desc}'")
-    return home()
+    return redirect(url_for('login'))
 
 @app.route('/mensalplanner/remove_task', methods = ['POST', 'GET'])
 def remove_task():
     task_id = request.args.get('jsdata')
     
     database.remove_task(mysql.connection, task_id)
-    return home()
+    return redirect(url_for('login'))
 
 @app.route('/mensalplanner/view_task')
 def view_task():
@@ -95,6 +97,36 @@ def view_task():
      task_details = database.get_task_from_id(mysql.connection, task_id)
      return render_template('view_task.html', task_details = task_details)
 
+@app.route('/mensalplanner/new_task')
+def new_task():
+    day     = request.args.get('day')
+    user_id = request.args.get('user')
+    
+    return render_template('new_task.html', day = day, user_id = user_id, month = datetime.now().month, year = datetime.now().year)
+
+@app.route('/mensalplanner/insert_newTask', methods = ['POST', 'GET'])
+def insert_newTask():
+    l = ['user_id', 'task_name', 'task_desc', 'task_day', 'task_month', 'task_year', 'task_value', 'task_debcred']
+    
+    for i in request.form.items():
+        print(i)
+
+    if ut.verifyRequestList('POST', l, request.form): 
+        user_id    = request.form['user_id']
+        task_name  = request.form['task_name']
+        task_desc  = request.form['task_desc']
+        task_day   = request.form['task_day']
+        task_month = request.form['task_month']
+        task_year  = request.form['task_year']
+        task_value = request.form['task_value']
+        task_debcred = 0
+        #task_debcred = request.form['task_debcred']
+        label_id = '1'
+        
+        # task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label        
+        database.insert_into_table(mysql.connection, 'task', task_name = task_name, task_desc = task_desc, task_day = task_day, task_month = task_month, task_year = task_year, task_value = task_value, task_debcred = task_debcred, user_id = user_id, label_id = label_id)
+    
+    return redirect(url_for('home'))
 
 @app.route('/mensalplanner/home')
 def home():
@@ -106,7 +138,7 @@ def home():
 
         # get tasks of user on now month
         tasks = database.get_task_from_user(mysql.connection, account['id'], month = datetime.now().month, year = datetime.now().year)
-        
+
         # get days of month
         days_month = ut.get_days_of_date()
 
@@ -124,7 +156,7 @@ def profile():
         account = {'user_id' : u_id, 'username' : name, 'password' : password, 'email' : email}
 
         return render_template('profile.html', account = account)
-    return home()
+    return redirect(url_for('login'))
 
 
 @app.route('/mensalplanner/logout')

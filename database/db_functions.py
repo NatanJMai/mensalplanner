@@ -96,7 +96,6 @@ def create_tables(connection):
     (task_id            INT PRIMARY KEY AUTO_INCREMENT,
      task_name          VARCHAR(255)  NOT NULL,
      task_description   VARCHAR(255)  NOT NULL,
-     task_datetime      DATE          NOT NULL,
      task_day           TINYINT       NOT NULL,
      task_month         TINYINT       NOT NULL,
      task_year          SMALLINT      NOT NULL,
@@ -143,6 +142,24 @@ def verify_login(connection, username, password):
 def insert_into_table(connection, table, **kwargs):
     query = ""
 
+    # task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label
+    if 'task' in table:
+        task_name    = kwargs['task_name']
+        task_desc    = kwargs['task_desc']
+        task_day     = kwargs['task_day']
+        task_month   = kwargs['task_month']
+        task_year    = kwargs['task_year']
+        task_value   = kwargs['task_value']
+        task_debcred = kwargs['task_debcred']
+        user_id      = kwargs['user_id']
+        label_id     = kwargs['label_id']
+
+        query = f''' INSERT INTO task VALUES (NULL, '{task_name}', '{task_desc}', '{task_day}', '{task_month}', '{task_year}', '{task_value}', '{task_debcred}', '{user_id}', '{label_id}');'''
+        print(query)
+        execute_query(connection, query)
+        return True
+    
+    # id, name, password, email
     if 'user' in table:
         username = kwargs['username']
         password = kwargs['password']
@@ -154,7 +171,6 @@ def insert_into_table(connection, table, **kwargs):
         if exist:
             return False
 
-        # id, name and password
         query = f''' INSERT INTO user VALUES (NULL, '{username}', '{password}', '{email}');'''
         execute_query(connection, query)
         return True
@@ -165,7 +181,7 @@ def get_task_from_id(connection, task_id):
     result = read_query(connection, query, only_one = 'only_one')
     return result
 
-# task_id, task_name, task_description, task_datetime, task_user, task_label
+# task_id, task_name, task_description, task_datetime, task_day, task_month, task_year, task_value, task_credit_debit, user, label
 def get_task_from_user(connection, user_id, **kwargs):
     if 'month' in kwargs and 'year' in kwargs:
         year  = kwargs['year']

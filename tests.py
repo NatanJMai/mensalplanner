@@ -28,9 +28,9 @@ def test_insert(day):
     year    = datetime.datetime.now().year
     query_task = f'''
     INSERT INTO task VALUES 
-    (null, 'TASK 4', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 15000, FALSE, 2, 1),
-    (null, 'TASK 5', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 2022, TRUE, 2, 2),
-    (null, 'TASK 6', 'TASK TO FINANCE', '{now}', '{day}', '{month}', '{year}', 3333, FALSE, 2, 3);
+    (null, 'TASK 4', 'TASK TO FINANCE', '{day}', '{month}', '{year}', 15000, FALSE, 2, 1),
+    (null, 'TASK 5', 'TASK TO FINANCE', '{day}', '{month}', '{year}', 2022, TRUE, 2, 2),
+    (null, 'TASK 6', 'TASK TO FINANCE', '{day}', '{month}', '{year}', 3333, FALSE, 2, 3);
     '''
 
     connection = database.connect_on_database()
