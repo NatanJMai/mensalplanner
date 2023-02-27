@@ -6,52 +6,68 @@
     day_and_tasks 
 -->
 
-{% extends 'layout.html' %}
+<!-- TASK TABLE task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
+<main>
+    <div style="display: inline-table;">
+        <h2>Welcome back, {{ account['username'] }}. Here your today tasks:</h2>
+    </div>
 
-{% block title %}Home{% endblock %}
+    {% extends 'layouts/layout.html' %}
 
-{% block content %}
-<h2>Welcome back, {{ account['username'] }}. Here your today tasks:</h2>
+    {% block title %}Home{% endblock %}
 
-<div>
-    <div class="wrapper">
-        <!-- Week Days: 'Monday', 'Tuesday' etc. -->
-        {% for d in range(0,7) %}
+    {% block content %}
+
+    <div>
+        <div class="wrapper">
+            <!-- Week Days: 'Monday', 'Tuesday' etc. -->
+            {% for d in range(0,7) %}
             <div class="wrapper-weekday">
                 <h1> {{ week_days[d] }} </h1>
             </div>
-        {% endfor %}
-
-        <!-- Every day of month -->
-        {% for week in days_month %}
-            {% for day in week %}
-                {% if day != 0 %}
-                    <article class="box" id="article_task">
-                        <h1> DIA {{day}} </h1>
-                        {% if day in day_and_tasks %}
-                            
-                            <!-- Display tasks of day. TASK TABLE task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
-                            {% for dtask in day_and_tasks[day] %}
-                                <button id="{{ dtask[0] }}" type="button" class="button-5 common">
-                                    {{ dtask[1] }} <br />
-                                </button>
-                            {% endfor %}
-                        {% endif %}
-
-                        <button id="{{day}}" class="new_task" type="button">
-                            (+) NEW
-                        </button>
-                    </article>
-                {% else %}
-                    <div class="wrapper-day"></div>
-                {% endif %}
             {% endfor %}
-        {% endfor %}
-    </div>
-    
-    <div id = "div_task" class="centered centeredbox" style="visibility:hidden"></div>
-</div>
 
+            <!-- Every day of month -->
+            {% for week in days_month %}
+            {% for day in week %}
+            {% if day != 0 %}
+            <div class="box">
+                <div class="box_day">
+                    <h4 class="my-0 fw-normal">{{day}} / {{month}}</h4>
+                </div>
+
+                {% if day in day_and_tasks %}
+
+                <div class="tasks_day">
+                    <!-- Display tasks of day. -->
+                    {% for dtask in day_and_tasks[day] %}
+                    <button id="{{ dtask[0] }}" type="button" class="button-5 common">
+                        {{ dtask[1] }} <br />
+                    </button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="wrapper-day"></div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+
+            <!--<button id="{{day}}" class="new_task" type="button">
+                (+) NEW
+            </button>-->
+        </div>
+
+        <div class="fab-container">
+            <div class="button iconbutton new_task">
+                <i class="fa-solid fa-plus">+</i>
+            </div>
+        </div>
+
+        <div id="div_task" class="centered centeredbox" style="visibility:hidden"></div>
+    </div>
+</main>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
@@ -59,13 +75,12 @@
     $('.new_task').click(newTask)
 
     function newTask() {
-        var day     = this.id;
         var user_id = "{{ account['id'] }}";
 
         $.ajax({
             url: "/mensalplanner/new_task",
             type: "get",
-            data: { day: day, user: user_id },
+            data: { user: user_id },
             success: function (response) {
                 $("#div_task").html(response);
                 $('div#div_task').css('visibility', 'visible');

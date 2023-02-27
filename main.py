@@ -1,3 +1,4 @@
+from pickle import TRUE
 from flask           import Flask, render_template, request, session, redirect, url_for
 from mysql.connector import Error
 from flask_mysqldb   import MySQL
@@ -24,7 +25,7 @@ def index(**kwargs):
     if 'msg' in kwargs:
         msg = kwargs['msg']
 
-    return render_template('index.html', msg = msg)
+    return render_template('home/index.html', msg = msg)
     
 @app.route('/mensalplanner/login', methods = ['POST', 'GET'])
 def login():
@@ -70,7 +71,7 @@ def register():
         database.insert_into_table(mysql.connection, 'user', username = username, password = password, email = email)
         return login()
 
-    return render_template('register.html', msg = msg)
+    return render_template('accounts/register.html', msg = msg)
 
 @app.route('/mensalplanner/update_task', methods = ['POST', 'GET'])
 def update_task():
@@ -82,7 +83,7 @@ def update_task():
         task_desc = request.form['task_desc']
         
         database.update_task(mysql.connection, task_id, task_name, task_desc)
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/mensalplanner/remove_task', methods = ['POST', 'GET'])
 def remove_task():
@@ -95,14 +96,13 @@ def remove_task():
 def view_task():
      task_id = request.args.get('jsdata')
      task_details = database.get_task_from_id(mysql.connection, task_id)
-     return render_template('view_task.html', task_details = task_details)
+     return render_template('home/view_task.html', task_details = task_details)
 
 @app.route('/mensalplanner/new_task')
 def new_task():
-    day     = request.args.get('day')
     user_id = request.args.get('user')
     
-    return render_template('new_task.html', day = day, user_id = user_id, month = datetime.now().month, year = datetime.now().year)
+    return render_template('home/new_task.html', day = datetime.now().day, user_id = user_id, month = datetime.now().month, year = datetime.now().year)
 
 @app.route('/mensalplanner/insert_newTask', methods = ['POST', 'GET'])
 def insert_newTask():
@@ -135,6 +135,7 @@ def home():
     # user is logged
     if 'loggedin' in account:
         week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        month_str = datetime.now().strftime('%B')
 
         # get tasks of user on now month
         tasks = database.get_task_from_user(mysql.connection, account['id'], month = datetime.now().month, year = datetime.now().year)
@@ -145,7 +146,7 @@ def home():
         # get tasks of days
         day_and_tasks = ut.get_days_and_task(days_month, tasks)
 
-        return render_template('home.html', account = account, tasks = tasks, days_month = days_month, week_days = week_days, day_and_tasks = day_and_tasks)
+        return render_template('home/home.html', account = account, tasks = tasks, days_month = days_month, week_days = week_days, day_and_tasks = day_and_tasks, month = month_str)
 
     return redirect(url_for('login'))
 
@@ -155,7 +156,7 @@ def profile():
         u_id, name, password, email = database.verify_login(mysql.connection, session['username'], session['password'])
         account = {'user_id' : u_id, 'username' : name, 'password' : password, 'email' : email}
 
-        return render_template('profile.html', account = account)
+        return render_template('accounts/profile.html', account = account)
     return redirect(url_for('login'))
 
 
@@ -166,7 +167,7 @@ def logout():
 
 @app.route('/')
 def hello_world():
-    return render_template('index.html')
+    return render_template('home/index.html')
 
 def start_server():
     app.run(host='localhost', port=80)
@@ -176,7 +177,7 @@ def view_page():
     t.daemon = True
     t.start()
 
-    webview.create_window("PyWebView & Flask", "http://localhost/mensalplanner/index", width = 1200)
+    webview.create_window("PyWebView & Flask", "http://localhost/mensalplanner/index", width=1240)
     webview.start()
     sys.exit()
 
