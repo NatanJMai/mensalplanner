@@ -1,34 +1,28 @@
-<!-- TABLE task -> task_id, task_name, task_description, task_datetime, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
-<div>
-    <div id="div_details" class="modal__content" data-closable>
-        <a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
+﻿<!-- TABLE task -> task_id, task_name, task_description, task_datetime, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
 
-        <form action="{{ url_for('insert_newTask') }}" method="post">
-            <input type="text" name="user_id" value="{{ user_id }}" id="user_id" hidden="hidden">
+<a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
+<form action="{{ url_for('insert_newTask') }}" method="post">
+    <fieldset>
+        <legend><span class="number">1</span> New task info</legend>
 
-            <label for="task_name">Name: </label>
-            <input type="text" name="task_name" value="" id="task_name" required> <br>
+        <input type="text" name="user_id" value="{{ user_id }}" id="user_id" hidden="hidden">
+        <input type="text" id="task_name" name="task_name" placeholder="Task Name">
 
-            <label for="task_desc">Description</label>
-            <input type="text" name="task_desc" value="" id="task_desc" required> <br>
+        <label for="task_desc">Task Description</label>
+        <textarea id="task_desc" name="task_desc"></textarea>
 
-            <label for="task_day">Day</label>
-            <input type="number" name="task_day" value="{{day}}" id="task_day" required> <br>
+        <label for="task_value">Value</label>
+        <input type="number" id="task_value" name="task_value">
 
-            <label for="task_month">Month</label>
-            <input type="number" name="task_month" value="{{month}}" id="task_month" required> <br>
+        <label>Date</label>
+        <input type="date" id="task_date" name="task_date">
 
-            <label for="task_year">Year</label>
-            <input type="number" name="task_year" value="{{year}}" id="task_year" required> <br>
+        <label>Debit or Credit?</label>
+        <input type="radio" id="0" value="0" name="task_debcred"><label for="under_13" class="light">Debit</label><br>
+        <input type="radio" id="1" value="1" name="task_debcred"><label for="over_13" class="light">Credit</label>
+    </fieldset>
 
-            <label for="task_value">Value</label>
-            <input type="number" name="task_value" value="" id="task_value" required> <br>
+    <input type="submit" class="button-38" value="NEW TASK">
+</form>
 
-            <label for="task_debcred">Debit / Credit</label>
-            <input type="text" name="task_debcred" value="" id="task_debcred" required> <br>
-
-            <input type="submit" class="button-38" value="NEW TASK">
-        </form>
-    </div>
-</div>
 

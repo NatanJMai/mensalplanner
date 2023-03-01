@@ -106,7 +106,7 @@ def new_task():
 
 @app.route('/mensalplanner/insert_newTask', methods = ['POST', 'GET'])
 def insert_newTask():
-    l = ['user_id', 'task_name', 'task_desc', 'task_day', 'task_month', 'task_year', 'task_value', 'task_debcred']
+    l = ['user_id', 'task_name', 'task_desc', 'task_date', 'task_value', 'task_debcred']
     
     for i in request.form.items():
         print(i)
@@ -115,12 +115,9 @@ def insert_newTask():
         user_id    = request.form['user_id']
         task_name  = request.form['task_name']
         task_desc  = request.form['task_desc']
-        task_day   = request.form['task_day']
-        task_month = request.form['task_month']
-        task_year  = request.form['task_year']
+        task_year, task_month, task_day = request.form['task_date'].split('-')
         task_value = request.form['task_value']
-        task_debcred = 0
-        #task_debcred = request.form['task_debcred']
+        task_debcred = request.form['task_debcred']
         label_id = '1'
         
         # task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label        

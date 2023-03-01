@@ -1,9 +1,7 @@
-* {
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -11,6 +9,15 @@ body {
     margin-right: 1%;
     margin-top: 1%;
     text-align: center;
+    font-family: 'Nunito', sans-serif;
+}
+
+form {
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    border-radius: 8px;
 }
 
 .sidebar_vertical {
@@ -27,6 +34,86 @@ body {
 
 .h1, h1 {
     font-size: 16px;
+    margin: 0 0 30px 0;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    font-size: 16px;
+    height: auto;
+    margin: 0;
+    outline: 0;
+    padding: 15px;
+    width: 100%;
+    background-color: #e8eeef;
+    color: #8a97a0;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    margin-bottom: 30px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin: 0 4px 8px 0;
+}
+
+select {
+    padding: 6px;
+    height: 32px;
+    border-radius: 2px;
+}
+
+fieldset {
+    margin-bottom: 30px;
+    border: none;
+}
+
+legend {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+    label.light {
+        font-weight: 300;
+        display: inline;
+    }
+
+.number {
+    background-color: #5fcf80;
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 4px;
+    line-height: 30px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    border-radius: 100%;
+}
+
+@media screen and (min-width: 480px) {
+
+    form {
+        max-width: 480px;
+    }
 }
 
 .centered {
@@ -38,21 +125,21 @@ body {
 
 .centeredbox {
     text-align: center;
-    color: #fff;
-    padding: 20px;
+    background-color: rgb(0 123 255 / 25%);
+    color: #000000;
+    margin: 2px;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    /*background: linear-gradient(, #4A00E0, #8E2DE2);*/
+    box-shadow: 0 1px 2px rgb(0 0 0 / 50%), 0 6px 6px rgb(0 0 0 / 50%);
+    width: 400px;
 }
 
 .modal__content {
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     position: relative;
-    width: 450px;
-    height: 450px;
-    max-width: 100%;
-    background: cornflowerblue;
-    padding: 4em 2em;
+    /* width: 450px; */
+    /* height: 450px; */
+    padding: 1em 2em;
+    width:400px;
 }
 
 .modal__footer {
@@ -153,7 +240,18 @@ i {
 
 
 .button {
-    transition-duration: 0.4s;
+    padding: 19px 39px 18px 39px;
+    color: #FFF;
+    background-color: #4bc970;
+    font-size: 18px;
+    text-align: center;
+    font-style: normal;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid #3ac162;
+    border-width: 1px 1px 3px;
+    box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+    margin-bottom: 10px;
 }
 
 .button:hover {
