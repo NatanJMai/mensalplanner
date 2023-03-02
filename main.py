@@ -75,14 +75,18 @@ def register():
 
 @app.route('/mensalplanner/update_task', methods = ['POST', 'GET'])
 def update_task():
-    l = ['task_id', 'task_name', 'task_desc']
+    l = ['task_id', 'task_name', 'task_desc', 'update_task']
 
     if ut.verifyRequestList('POST', l, request.form):
-        task_id   = request.form['task_id']
-        task_name = request.form['task_name']
-        task_desc = request.form['task_desc']
+        label_id = '1'
+        task_id      = request.form['task_id']
+        task_name    = request.form['task_name']
+        task_desc    = request.form['task_desc']
+        task_value   = request.form['task_value']
+        task_debcred = request.form['task_debcred']
+        task_year, task_month, task_day = request.form['task_date'].split('-')
         
-        database.update_task(mysql.connection, task_id, task_name, task_desc)
+        database.update_task(mysql.connection, task_id, task_name, task_desc, task_value, task_debcred, task_year, task_month, task_day)
     return redirect(url_for('home'))
 
 @app.route('/mensalplanner/remove_task', methods = ['POST', 'GET'])
@@ -96,7 +100,11 @@ def remove_task():
 def view_task():
      task_id = request.args.get('jsdata')
      task_details = database.get_task_from_id(mysql.connection, task_id)
-     return render_template('home/view_task.html', task_details = task_details)
+
+     # task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label
+     task_date = ut.format_date(task_details[3], task_details[4], task_details[5])
+
+     return render_template('home/view_task.html', task_details = task_details, task_date = task_date)
 
 @app.route('/mensalplanner/new_task')
 def new_task():
@@ -107,9 +115,6 @@ def new_task():
 @app.route('/mensalplanner/insert_newTask', methods = ['POST', 'GET'])
 def insert_newTask():
     l = ['user_id', 'task_name', 'task_desc', 'task_date', 'task_value', 'task_debcred']
-    
-    for i in request.form.items():
-        print(i)
 
     if ut.verifyRequestList('POST', l, request.form): 
         user_id    = request.form['user_id']
@@ -131,7 +136,7 @@ def home():
 
     # user is logged
     if 'loggedin' in account:
-        week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
         month_str = datetime.now().strftime('%B')
 
         # get tasks of user on now month

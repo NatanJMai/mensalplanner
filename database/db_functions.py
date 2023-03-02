@@ -53,7 +53,6 @@ def execute_query(connection, query):
     try:
         cursor.execute(query)
         connection.commit()
-        #print("Query successful!")
     except Error as err:
         print(f"Error '{err}'")
         return False
@@ -155,7 +154,7 @@ def insert_into_table(connection, table, **kwargs):
         label_id     = kwargs['label_id']
 
         query = f''' INSERT INTO task VALUES (NULL, '{task_name}', '{task_desc}', '{task_day}', '{task_month}', '{task_year}', '{task_value}', '{task_debcred}', '{user_id}', '{label_id}');'''
-        print(query)
+
         execute_query(connection, query)
         return True
     
@@ -193,8 +192,9 @@ def get_task_from_user(connection, user_id, **kwargs):
     result = read_query(connection, query)
     return result
 
-def update_task(connection, task_id, task_name, task_desc):
-    query = f"UPDATE task t SET t.task_name = '{task_name}', t.task_description = '{task_desc}' WHERE t.task_id = '{task_id}';"
+def update_task(connection, task_id, task_name, task_desc, task_value, task_debcred, task_year, task_month, task_day):
+    query = f"UPDATE task t SET t.task_name = '{task_name}', t.task_description = '{task_desc}', t.task_value = '{task_value}', t.task_credit_debit = '{task_debcred}', t.task_year = '{task_year}', t.task_month = '{task_month}' , t.task_day = '{task_day}' WHERE t.task_id = '{task_id}';"
+    
     execute_query(connection, query)
     return
 

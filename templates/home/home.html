@@ -1,10 +1,3 @@
-<!-- variables from Python: 
-    account, 
-    tasks, 
-    days_month, 
-    week_days, 
-    day_and_tasks 
--->
 
 <!-- TASK TABLE task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
 <main>
@@ -23,37 +16,35 @@
             <!-- Week Days: 'Monday', 'Tuesday' etc. -->
             {% for d in range(0,7) %}
             <div class="wrapper-weekday">
-                <em>{{ week_days[d] }}</em>
+                <p>{{ week_days[d] }}</p>
             </div>
             {% endfor %}
 
             <!-- Every day of month -->
             {% for week in days_month %}
-            {% for day in week %}
-            {% if day != 0 %}
-            <div class="box">
-                <div class="box_day">
-                    <h4 class="my-0 fw-normal">{{day}} / {{month}}</h4>
-                </div>
+                {% for day in week %}
+                    {% if day != 0 %}
+                        <div class="box">
+                            <div class="box_day">
+                                <h4 class="my-0 fw-normal">{{day}} / {{month}}</h4>
+                            </div>
 
-                {% if day in day_and_tasks %}
-
-                <div class="tasks_day">
-                    <!-- Display tasks of day. -->
-                    {% for dtask in day_and_tasks[day] %}
-                    <button id="{{ dtask[0] }}" type="button" class="button-5 common">
-                        {{ dtask[1] }} <br />
-                    </button>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            {% else %}
-            <div class="wrapper-day"></div>
-            {% endif %}
+                        {% if day in day_and_tasks %}
+                            <div class="tasks_day">
+                                <!-- Display tasks of day. -->
+                                {% for dtask in day_and_tasks[day] %}
+                                <button id="{{ dtask[0] }}" type="button" class="button-5 common">
+                                {{ dtask[1] }} <br />
+                                </button>
+                        {% endfor %}
+                            </div>
+                        {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="wrapper-day"></div>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
-            {% endfor %}
-
         </div>
 
         <div class="fab-container">
@@ -115,25 +106,11 @@
 </script>
 
 <script type="application/javascript">
-    /* function hidden_show(name) {
-         var element = document.getElementById("third");
-         var hidden  = element.getAttribute("hidden");
-
-         if (hidden) {
-             element.removeAttribute("hidden");
-         } else {
-             element.setAttribute("hidden", "hidden");
-         }
-     } */
-
      function hidden_show_update(button, div_first, div_second) {
          var button    = document.getElementById(button);
 
          var element_first  = document.getElementById(div_first);
          var element_second = document.getElementById(div_second);
-         
-         // var element_details = document.getElementById("div_details");
-         // var element_update  = document.getElementById("div_update");
 
          var hidden_first  = element_first.getAttribute("hidden");
          var hidden_second = element_second.getAttribute("hidden");

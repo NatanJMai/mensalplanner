@@ -1,32 +1,45 @@
-<!-- task_id, task_name, task_description, task_datetime, task_user, task_label -->
-<div>
-    <div id="div_details" class="modal__content" data-closable>
-        <a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
+<!-- TABLE task -> task_id, task_name, task_description, task_day, task_month, task_year, task_value, task_credit_debit, user, label -->
 
-        <h1>{{ task_details[1] }}</h1>
-        <p>{{ task_details[2] }}</p>
+<a href="{{ url_for('home') }}" class="modal__close">X</a>
+<form action="{{ url_for('update_task') }}" class="form_task" method="post">
+    <fieldset>
+        <!-- TASK name -->
+        <legend><span class="number">1</span> {{task_details[1]}} </legend>
 
-        <!--<input type="submit" id="button_update" onclick="hidden_show_update()">-->
-        <button id="button_update" class="button-38" onclick="hidden_show_update('button_update', 'div_details', 'div_update')">UPDATE TASK</button>
-        <button id="button_remove" class="button-38" onclick="">REMOVE TASK</button>
-    </div>
-</div>
-
-<div id="div_update" class="modal__content" hidden="hidden">
-    <a href="/mensalplanner/home" class="modal__close">CLOSE &times;</a>
-
-    <form action="{{ url_for('update_task') }}" method="post">
+        <!-- TASK id hidden -->
         <input type="text" name="task_id" value="{{ task_details[0] }}" id="task_id" hidden="hidden">
 
-        <label for="task_name">Name: </label>
-        <input type="text" name="task_name" value="{{ task_details[1] }}" id="task_name"> <br>
+        <!-- TASK name -->
+        <input type="text" id="task_name" name="task_name" value="{{task_details[1]}}" placeholder="Task Name">
 
-        <label for="task_desc">Description</label>
-        <input type="text" name="task_desc" value="{{ task_details[2] }}" id="task_desc">
+        <!-- TASK description -->
+        <label for="task_desc">Task Description</label>
+        <textarea id="task_desc" name="task_desc">{{task_details[2]}}</textarea>
 
-        <input type="submit" class="button-38" value="UPDATE">
-    </form>
-</div>
+        <!-- TASK value -->
+        <label for="task_value">Value</label>
+        <input type="number" id="task_value" name="task_value" value="{{task_details[6]}}" placeholder="{{task_details[6]}}">
+
+        <!-- TASK date -->
+        <label>Date</label>
+        <input type="date" id="task_date" name="task_date" value="{{task_date}}">
+
+        <!-- TASK deb/cred -->
+        <label>Debit or Credit?</label>
+        
+        {% if task_details[7] == 0 %}
+            <input type="radio" id="0" value="0" name="task_debcred" checked><label for="task_debcred" class="light">Credit</label><br>
+            <input type="radio" id="1" value="1" name="task_debcred"><label for="task_debcred" class="light">Debit</label>
+        {% else %}
+            <input type="radio" id="0" value="0" name="task_debcred"><label for="task_debcred" class="light">Credit</label><br>
+            <input type="radio" id="1" value="1" name="task_debcred" checked><label for="task_debcred" class="light">Debit</label>
+        {% endif %}
+
+    </fieldset>
+
+    <input type="submit" id="button_update" class="button-38" name="update_task" value="UPDATE TASK">
+    <input type="submit" id="button_remove" class="button-38" name="remove_task" value="REMOVE TASK">
+</form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>

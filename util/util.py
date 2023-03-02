@@ -1,6 +1,15 @@
 import calendar
 from datetime import datetime
 
+def format_date(day, month, year):
+    if month < 10:
+        month = '0' + str(month)
+    if day < 10:
+        day = '0' + str(day)
+
+    s_date = f"{year}-{month}-{day}"
+    return s_date
+
 def get_days_of_date(**kwargs):
     if 'month' and 'year' in kwargs:
         month = kwargs['month']
