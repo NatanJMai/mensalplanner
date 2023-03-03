@@ -16,6 +16,17 @@ body {
     color: white;
 }
 
+svg{
+    color:black;
+}
+
+svg:hover,
+svg:focus {
+    transform: translateY(-0.2rem);
+    color: #007bff;
+    cursor: pointer;
+}
+
 form {
     max-width: 300px;
     margin: 10px auto;
@@ -39,13 +50,13 @@ form {
 .sidebar_vertical {
     width: min-content;
     position: absolute;
-    height: 330px; 
+    height: 400px;
     top: 50%;
     transform: translate(0, -50%);
     border-top-right-radius: 50px 50px;
     border-bottom-right-radius: 50px 50px;
     border-right: groove;
-    background-color: ghostwhite;
+    background-color: white;
 }
 
 .h1, h1 {
@@ -196,6 +207,18 @@ i {
     background-color: #fff;
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
+    border-radius: 5px;
+}
+
+.box:hover,
+.box:focus {
+    background-color: #007bff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    box-shadow: 0 1rem 1rem rgba(0,0,0,0.3);
+    border-radius:8px;
+    transform: translateY(-0.5rem);
+    color:white;
+    cursor:pointer;
 }
 
 [data-interactive]:hover,
@@ -229,8 +252,8 @@ i {
 
 /* CSS */
 .button-5 {
-    background-color: #ff7508;
-    border: 1px solid #ff6a03;
+    background-color: #333334;
+    border: 0px solid #68b0ff;
     border-radius: 0.25rem;
     box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0;
     box-sizing: border-box;
@@ -241,7 +264,7 @@ i {
 
 .button-5:hover,
 .button-5:focus {
-    background-color: #fb8332;
+    background-color: #007bff;
     box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
 }
 
@@ -258,16 +281,16 @@ i {
 
 .button {
     padding: 19px 39px 18px 39px;
-    color: #FFF;
-    background-color: #4bc970;
+    color: #000;
+    /* background-color: #4bc970; */
     font-size: 18px;
     text-align: center;
     font-style: normal;
     border-radius: 5px;
     width: 100%;
-    border: 1px solid #3ac162;
-    border-width: 1px 1px 3px;
-    box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+    /* border: 1px solid rgb(0 123 255 / 50%); */
+    border-width: 1px 1px 3px px;
+    /* box-shadow: 0 -1px 0 rgb(255 255 255 / 10%) inset; */
     margin-bottom: 10px;
 }
 
@@ -298,6 +321,7 @@ i {
     margin-top: auto;
     box-shadow: 0 0 9px 0 rgb(0 0 0 / 50%);*/
     text-align: center;
+    color:black;
 }
 
 .modal__close {
@@ -506,7 +530,8 @@ i {
 }
 
 body.loggedin {
-    background-color: #f3f4f7;
+    background-color: #ededed;
+    color: #000;
 }
 
 .content {

@@ -11,7 +11,7 @@
 
     {% block content %}
 
-    <div>
+    <div style = "border-radius: 10px;">
         <div class="wrapper">
             <!-- Week Days: 'Monday', 'Tuesday' etc. -->
             {% for d in range(0,7) %}
@@ -61,6 +61,7 @@
 <script>
     $('.common').click(clickTask)
     $('.new_task').click(newTask)
+    $('.box').click(newTask)
 
     function newTask() {
         var user_id = "{{ account['id'] }}";
@@ -77,14 +78,9 @@
                 //Do Something to handle error
             }
         });
-
-        
-
     }
 
     function clickTask() {
-        //alert("click from " + $(this.id))
-
         var task_id = this.id;
 
         $.ajax({
