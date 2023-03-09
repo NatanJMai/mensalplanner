@@ -137,3 +137,6 @@ dmypy.json
 *bkp.html
 /teste.css
 /teste.html
+
+# Tests file
+tests.py
